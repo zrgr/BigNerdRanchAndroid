@@ -27,11 +27,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.trueButton.setOnClickListener { view: View ->
+        binding.questionTextView.setOnClickListener{
+            currentIndex = (currentIndex + 1) % questionBank.size
+            updateQuestion()
+        }
+
+        binding.trueButton.setOnClickListener {
             checkAnswer(true)
         }
 
-        binding.falseButton.setOnClickListener { view: View ->
+        binding.falseButton.setOnClickListener {
             checkAnswer(false)
         }
 
