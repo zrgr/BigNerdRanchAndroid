@@ -23,7 +23,8 @@ class MainActivity : AppCompatActivity() {
         Question(R.string.question_americas, true),
         Question(R.string.question_asia, true))
 
-        private var currentIndex = 0
+    private var currentIndex = 0
+    private var score = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,18 +85,33 @@ class MainActivity : AppCompatActivity() {
     private fun checkAnswer(userAnswer: Boolean) {
         val correctAnswer = questionBank[currentIndex].answer
 
-        val messageResId = if (userAnswer == correctAnswer) {
-            R.string.correct_toast
+        val messageResId: Int
+
+        if (userAnswer == correctAnswer) {
+            messageResId = R.string.correct_toast
+            score += 1
         } else {
-            R.string.incorrect_toast
+            messageResId = R.string.incorrect_toast
         }
 
         showToast(messageResId)
+
+        if(currentIndex == questionBank.size - 1)
+            displayScore()
     }
 
     private fun toggleNavButtons(enable: Boolean) {
         binding.trueButton.isEnabled = enable
         binding.falseButton.isEnabled = enable
+    }
+
+    private fun displayScore() {
+        var scoreAsPercentage = (score.toDouble() / questionBank.size) * 100
+        Toast.makeText(
+            this,
+            "You scored ${scoreAsPercentage.toInt()}%",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     override fun onStart() {
