@@ -37,10 +37,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.trueButton.setOnClickListener {
+            toggleNavButtons(false)
             checkAnswer(true)
         }
 
         binding.falseButton.setOnClickListener {
+            toggleNavButtons(false)
             checkAnswer(false)
         }
 
@@ -76,6 +78,7 @@ class MainActivity : AppCompatActivity() {
     private fun updateQuestion() {
         val questionTextResId = questionBank[currentIndex].textResId
         binding.questionTextView.setText(questionTextResId)
+        toggleNavButtons(true)
     }
 
     private fun checkAnswer(userAnswer: Boolean) {
@@ -88,6 +91,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         showToast(messageResId)
+    }
+
+    private fun toggleNavButtons(enable: Boolean) {
+        binding.trueButton.isEnabled = enable
+        binding.falseButton.isEnabled = enable
     }
 
     override fun onStart() {
