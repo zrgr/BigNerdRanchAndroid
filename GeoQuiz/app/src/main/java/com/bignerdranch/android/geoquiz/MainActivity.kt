@@ -3,28 +3,18 @@ package com.bignerdranch.android.geoquiz
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.Button
 import android.widget.Toast
+import androidx.activity.viewModels
 import com.bignerdranch.android.geoquiz.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
+
 
 private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
-    private val questionBank = listOf(
-        Question(R.string.question_australia, true),
-        Question(R.string.question_oceans, true),
-        Question(R.string.question_mideast, false),
-        Question(R.string.question_africa, false),
-        Question(R.string.question_americas, true),
-        Question(R.string.question_asia, true))
-
-    private var currentIndex = 0
-    private var score = 0
+    private val quizViewModel: QuizViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,8 +22,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Log.d(TAG, "Got a QuizViewModel: $quizViewModel")
+
         binding.questionTextView.setOnClickListener{
-            currentIndex = (currentIndex + 1) % questionBank.size
+            quizViewModel.moveToNext()
             updateQuestion()
         }
 
@@ -48,12 +40,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.previousButton.setOnClickListener {
-            currentIndex = if (currentIndex == 0) questionBank.size - 1 else currentIndex - 1
+            quizViewModel.moveToPrevious()
             updateQuestion()
         }
 
         binding.nextButton.setOnClickListener {
-            currentIndex = (currentIndex + 1) % questionBank.size
+            quizViewModel.moveToNext()
             updateQuestion()
         }
 
@@ -77,26 +69,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateQuestion() {
-        val questionTextResId = questionBank[currentIndex].textResId
+        val questionTextResId = quizViewModel.currentQuestionText
         binding.questionTextView.setText(questionTextResId)
         toggleNavButtons(true)
     }
 
     private fun checkAnswer(userAnswer: Boolean) {
-        val correctAnswer = questionBank[currentIndex].answer
+        val correctAnswer = quizViewModel.currentQuestionAnswer
 
         val messageResId: Int
 
         if (userAnswer == correctAnswer) {
             messageResId = R.string.correct_toast
-            score += 1
+            quizViewModel.currentScore += 1
         } else {
             messageResId = R.string.incorrect_toast
         }
 
         showToast(messageResId)
 
-        if(currentIndex == questionBank.size - 1)
+        if(quizViewModel.shouldFinalScoreBeDisplayed())
             displayScore()
     }
 
@@ -106,13 +98,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun displayScore() {
-        var scoreAsPercentage = (score.toDouble() / questionBank.size) * 100
+        var scoreAsPercentage = quizViewModel.getFinalScore()
         Toast.makeText(
             this,
-            "You scored ${scoreAsPercentage.toInt()}%",
+            "You scored ${scoreAsPercentage}%",
             Toast.LENGTH_SHORT
         ).show()
     }
+
+    //region lifecycle
 
     override fun onStart() {
         super.onStart()
@@ -138,4 +132,6 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         Log.d(TAG, "onDestroy() called")
     }
+
+    //endregion
 }
