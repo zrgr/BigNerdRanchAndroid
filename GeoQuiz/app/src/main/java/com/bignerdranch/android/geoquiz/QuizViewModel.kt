@@ -4,13 +4,9 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
-
-private const val TAG = "QuizViewModel"
 const val CURRENT_INDEX_KEY = "CURRENT_INDEX_KEY"
 
-class QuizViewModel(
-    private val savedStateHandle: SavedStateHandle
-): ViewModel() {
+class QuizViewModel: ViewModel() {
 
     private val questionBank = listOf(
         Question(R.string.question_australia, true),
@@ -20,9 +16,9 @@ class QuizViewModel(
         Question(R.string.question_americas, true),
         Question(R.string.question_asia, true))
 
-    private var currentIndex: Int = 0
-        get() = savedStateHandle.get(CURRENT_INDEX_KEY) ?: 0
-        set(field) = savedStateHandle.set(CURRENT_INDEX_KEY, field)
+    var currentIndex: Int = 0
+
+    var currentScore = 0
 
     val currentQuestionAnswer: Boolean
         get() = questionBank[currentIndex].answer
