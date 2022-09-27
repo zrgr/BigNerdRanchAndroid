@@ -108,6 +108,7 @@ class MainActivity : AppCompatActivity() {
                 messageResId = R.string.incorrect_toast
         }
 
+        resetCheatingStatus()
 
         showToast(messageResId)
 
@@ -127,6 +128,10 @@ class MainActivity : AppCompatActivity() {
             "You scored ${scoreAsPercentage}%",
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    private fun resetCheatingStatus() {
+        quizViewModel.isCheater = false
     }
 
     //region lifecycle
