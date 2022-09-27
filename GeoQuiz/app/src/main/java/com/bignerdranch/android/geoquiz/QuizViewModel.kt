@@ -20,6 +20,8 @@ class QuizViewModel: ViewModel() {
 
     var currentScore = 0
 
+    var isCheater: Boolean = false
+
     val currentQuestionAnswer: Boolean
         get() = questionBank[currentIndex].answer
 

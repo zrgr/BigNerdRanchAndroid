@@ -6,7 +6,8 @@
         <entry key="app/src/main/res/drawable/arrow_left.xml" value="0.258" />
         <entry key="app/src/main/res/drawable/ic_baseline_arrow_right_24.xml" value="0.258" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.258" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_cheat.xml" value="0.15273556231003038" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
       </map>
     </option>
   </component>
