@@ -3,8 +3,10 @@ package com.bignerdranch.android.geoquiz
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.bignerdranch.android.geoquiz.databinding.ActivityCheatBinding
 
 private const val EXTRA_ANSWER_IS_TRUE =
@@ -16,6 +18,7 @@ const val EXTRA_ANSWER_SHOWN =
 class CheatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCheatBinding
+    private val quizViewModel: QuizViewModel by viewModels()
 
     private var answerIsTrue = false
 
@@ -35,7 +38,15 @@ class CheatActivity : AppCompatActivity() {
             }
             binding.answerTextView.setText(answerText)
             setAnswerShownResult(true)
+            quizViewModel.cheatTokens -= 1
         }
+
+        //setApiLevelText()
+    }
+
+    private fun setApiLevelText() {
+        val apiLevelText = getString(R.string.api_level, Build.VERSION.SDK_INT)
+        binding.apiLevelTextView.append(apiLevelText)
     }
 
     private fun setAnswerShownResult(isAnswerShown: Boolean) {

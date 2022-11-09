@@ -37,6 +37,14 @@
         android:layout_marginTop="24dp"
         android:text="@string/cheat_button" />
 
+    <TextView
+        android:id="@+id/cheat_tokens_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="8dp"
+        tools:text="Cheat tokens: 3" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
