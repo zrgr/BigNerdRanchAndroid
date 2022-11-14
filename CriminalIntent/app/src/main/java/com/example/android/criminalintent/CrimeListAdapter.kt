@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.example.android.criminalintent.DateHelper.Companion.formatDate
 import com.example.android.criminalintent.databinding.ListItemCrimeBinding
 import com.example.android.criminalintent.databinding.ListItemCrimeRequiresPoliceBinding
 
@@ -14,7 +15,7 @@ class CrimeHolder(
 
     fun bind(crime: Crime) {
         binding.crimeTitle.text = crime.title
-        binding.crimeDate.text = crime.date.toString()
+        binding.crimeDate.text = formatDate(crime.date)
 
         binding.root.setOnClickListener {
             Toast.makeText(
@@ -38,7 +39,7 @@ class CrimePoliceRequiredHolder(
 
     fun bind(crime: Crime) {
         binding.crimeTitle.text = crime.title
-        binding.crimeDate.text = crime.date.toString()
+        binding.crimeDate.text = formatDate(crime.date)
 
         binding.contactPolice.setOnClickListener {
             Toast.makeText(
