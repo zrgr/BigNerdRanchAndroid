@@ -33,63 +33,23 @@ class CrimeHolder(
     }
 }
 
-class CrimePoliceRequiredHolder(
-    private val binding: ListItemCrimeRequiresPoliceBinding
-) : RecyclerView.ViewHolder(binding.root) {
-
-    fun bind(crime: Crime) {
-        binding.crimeTitle.text = crime.title
-        binding.crimeDate.text = formatDate(crime.date)
-
-        binding.contactPolice.setOnClickListener {
-            Toast.makeText(
-                binding.root.context,
-                "Police Contacted",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
-}
-
 class CrimeListAdapter(
     private val crimes: List<Crime>
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<CrimeHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ) : RecyclerView.ViewHolder {
+    ) : CrimeHolder {
         val inflater = LayoutInflater.from(parent.context)
-
-        return when (viewType) {
-            R.layout.list_item_crime -> {
-                val binding = ListItemCrimeBinding.inflate(inflater, parent, false)
-                CrimeHolder(binding)
-            }
-            else -> {
-                val binding = ListItemCrimeRequiresPoliceBinding.inflate(inflater, parent, false)
-                CrimePoliceRequiredHolder(binding)
-            }
-        }
+        val binding = ListItemCrimeBinding.inflate(inflater, parent, false)
+        return CrimeHolder(binding)
     }
 
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CrimeHolder, position: Int) {
         val crime = crimes[position]
-
-        if (crime.requiresPolice) {
-            (holder as CrimeHolder).bind(crime)
-        } else {
-            (holder as CrimePoliceRequiredHolder).bind(crime)
-        }
-    }
-
-    override fun getItemViewType(position: Int): Int {
-
-        return if (crimes[position].requiresPolice)
-            R.layout.list_item_crime
-        else
-            R.layout.list_item_crime_requires_police
+        holder.bind(crime)
     }
 
     override fun getItemCount() = crimes.size
